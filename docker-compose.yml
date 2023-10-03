@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  app:
+    image: umc:0.0.1
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/umc?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0.27
+    environment:
+      DATABASE_HOST: docker-mysql
+      DATABASE_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: umc
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: root
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: db
+#      PMA_PORT: 3306
+    depends_on:
+      - db
